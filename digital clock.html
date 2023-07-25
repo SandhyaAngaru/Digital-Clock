@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+       
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+           
+            min-height: 100vh;
+            background-color: #2f363e;
+            
+        }
+        #time{
+            display: flex;
+            gap: 40px;
+            color: white;
+        }
+        #time .circle{
+position: relative;
+width: 150px;
+height: 150px;
+display: flex;
+justify-content: center;
+align-items:center;
+        }
+        #time div{
+            position: absolute;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        #time div span{
+            position: absolute;
+            transform: translateX(-50%) translateY(-10px);
+            font-size: 0.35em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+           bottom: -30px;
+        }
+        #time .ap{
+            position: relative;
+            font-size: 2em;
+            transform: translateX(-20px);
+        }
+        #time .circle svg{
+            position: relative;
+            width: 150px;
+            height: 150px;
+            transform: rotate(270deg);
+        }
+        #time .circle svg circle{
+            width: 100%;
+            height: 100%;
+            fill: transparent;
+            stroke: #191919;
+            stroke-width: 4;
+            transform: translate(5px,5px);
+        }
+        #time .circle svg circle:nth-child(2){
+stroke: var(--clr);
+stroke-dasharray: 440;
+        }
+        .dots{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+        }
+        .dots::before
+        {
+            content: '';
+            position: absolute;
+            top: -3px;
+            width: 15px;
+            height: 15px;
+            background-color: var(--clr);
+            border-radius: 50%;
+            box-shadow:  0 0 20px var(--clr),
+            0 0 60px var(--clr);
+        }
+    </style>
+</head>
+<body>
+    <!-- <div class="container"> -->
+    <div id="time">
+        <div class="circle" style="--clr:#f05689;">
+            <div class="dots hr_dot"></div> 
+            <svg>
+                <circle cx = "70" cy = "70" r = "70"></circle>
+                <circle cx = "70" cy = "70" r = "70" id="hh"></circle>
+            </svg>
+            <div id="hours">00</div>
+        </div>
+        <div class="circle" style="--clr:#c3e40d;">
+            <div class="dots min_dot"></div> 
+            <svg>
+                <circle cx = "70" cy = "70" r = "70"></circle>
+                <circle cx = "70" cy = "70" r = "70" id="mm"></circle>
+            </svg>
+            <div id="minutes">00 </div>
+        </div>
+        <div class="circle" style="--clr:#4eb3ee;">
+            <div class="dots sec_dot"></div> 
+            <svg>
+                <circle cx = "70" cy = "70" r = "70"></circle>
+                <circle cx = "70" cy = "70" r = "70" id="ss"></circle>
+            </svg>
+            <div id="seconds">00 </div>
+        </div>
+        <div class="ap">
+            <div id="ampm">AM</div>
+        </div>
+    </div>
+</div>
+    <script>
+        setInterval(() =>{
+       
+        let hours = document.getElementById('hours')
+        let minutes = document.getElementById('minutes')
+        let seconds = document.getElementById('seconds')
+        let ampm = document.getElementById('ampm')
+        
+       let hh = document.getElementById('hh')
+       let mm = document.getElementById('mm')
+       let ss = document.getElementById('ss')
+
+       let hr_dot = document.querySelector('.hr_dot')
+       let min_dot = document.querySelector('.min_dot')
+       let sec_dot = document.querySelector('.sec_dot')
+
+        let h = new Date().getHours()
+        let m = new Date().getMinutes()
+        let s = new Date().getSeconds()
+         let am = h>=12 ? "PM" : "AM"
+         //coverting 24hours to 12 hours clock
+     if (h>12){
+        h=h-12;
+     }
+     ///adding zero before a single number hours
+     h=(h<10)?"0"+h:h;
+     m=(m<10)?"0"+m:m;
+     s=(s<10)?"0"+s:s;
+        hours.innerHTML = h + "<br><span>hours</span ";
+        minutes.innerHTML = m +  "<br><span>minutes</span ";
+        seconds.innerHTML = s +  "<br><span>seconds</span ";
+        ampm.innerHTML = am;
+        //for 12hours clock
+        hh.style.strokeDashoffset = 440 - (440*h)/12;
+        //for  60 minutes
+        mm.style.strokeDashoffset = 440 - (440*m)/60;
+        //for 60 seconds
+        ss.style.strokeDashoffset = 440 - (440*s)/60;
+
+       hr_dot.style.transform = `rotate(${h * 30}deg)`;
+       min_dot.style.transform=`rotate(${m*6}deg)`;
+       sec_dot.style.transform=`rotate(${s*6}deg)`;
+    })
+    </script>
+</body>
+</html>
